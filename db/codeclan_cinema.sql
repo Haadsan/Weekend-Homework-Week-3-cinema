@@ -23,6 +23,6 @@ CREATE TABLE ticket (
 
   Id SERIAL4 PRIMARY KEY,
   customer_id INT4 REFERENCES customer(id) ON DELETE CASCADE,
-  film_id INT4 REFERENCES film(id) ON DELETE CASCADE,
+  film_id INT4 REFERENCES film(id) ON DELETE CASCADE
 
 );

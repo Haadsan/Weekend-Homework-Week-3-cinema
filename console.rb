@@ -4,6 +4,11 @@ require_relative('Models/ticket.rb')
 
 require( 'pry-byebug' )
 
+# Ticket.delete_all()
+# Film.delete_all()
+# Customer.delete_all()
+
+
 customer_1 = Customer.new({ 'first_name' => 'Morgan', 'last_name' => 'Freeman', 'funds' => 80})
 customer_1.save()
 customer_2 = Customer.new({ 'first_name' => 'Maria', 'last_name' => 'Anjelo', 'funds' => 50})
@@ -13,7 +18,7 @@ customer_3.save()
 
 film_1 = Film.new({ 'title' => 'Matrix', 'price' => 12})
 film_1.save()
-film_1 = Film.new({ 'title' => 'Matrix2', 'price' => 13})
+film_2 = Film.new({ 'title' => 'Matrix2', 'price' => 13})
 film_2.save()
 
 ticket_1 = Ticket.new({ 'customer_id' => customer_1.id, 'film_id' => film_1.id})

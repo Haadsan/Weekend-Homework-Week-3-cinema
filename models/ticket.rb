@@ -12,12 +12,12 @@ class Ticket
   def initialize(options)
     @id = options['id'].to_i
     @film_id = options['film_id'].to_i
-    @customer_id = options['customer_id'].to.i
+    @customer_id = options['customer_id'].to_i
   end
 
 
   def save()
-    sql = "INSERT INTO tickets
+    sql = "INSERT INTO ticket
     (
       film_id,
       customer_id
@@ -29,7 +29,42 @@ class Ticket
     )
     RETURNING id"
     values = [@film_id, @customer_id]
-    visit = SqlRunner.run( sql,values ).first
-    @id = visit['id'].to_i
+    ticket = SqlRunner.run( sql, values ).first
+    @id = ticket['id'].to_i
   end
+
+  def self.all()
+    sql = "SELECT * FROM ticket"
+    values = []
+    ticket = SqlRunner.run(sql, values)
+    result =Ticket.map_ticket(ticket)
+    return result
+  end
+
+
+
+  def self.delete_all()
+    sql = "DELETE FROM ticket"
+    values = []
+    SqlRunner.run(sql, values)
+  end
+
+
+
+  def film()
+    sql = "SELECT * FROM film WHERE id = $1"
+    values = [@film_id]
+  film_hash = SqlRunner.run(sql, values).first()
+  return Film.new(film_hash)
+  end
+
+
+
+  def customer()
+    sql = "SELECT * FROM customer WHERE id = $1"
+    values = [@customer_id]
+  customer_hash = SqlRunner.run(sql, values).first()
+    return Customer.new(users_hash)
+  end
+
 end
