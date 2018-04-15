@@ -1,7 +1,7 @@
 require('pg')
+require_relative('ticket.rb')
 require_relative('customer.rb')
-require_relative('film')
-require_relative('ticket')
+require_relative('film.rb')
 require_relative('../db/sql_runner.rb')
 
 class Ticket
@@ -16,55 +16,50 @@ class Ticket
   end
 
 
-  def save()
-    sql = "INSERT INTO ticket
-    (
-      film_id,
-      customer_id
 
-    )
-    VALUES
-    (
-      $1, $2
-    )
-    RETURNING id"
-    values = [@film_id, @customer_id]
-    ticket = SqlRunner.run( sql, values ).first
-    @id = ticket['id'].to_i
+
+      sql = "INSERT INTO ticket
+      (film_id,customer_id)VALUES($1, $2)RETURNING id"
+      values = [@film_id, @customer_id]
+      ticket = SqlRunner.run( sql, values ).first
+      @id = ticket['id'].to_i
+    end
+
+
+
+
+    def self.all()
+      sql = "SELECT * FROM ticket"
+      values = []
+      ticket = SqlRunner.run(sql, values)
+      result =Ticket.map_ticket(ticket)
+      return result
+    end
+
+
+
+    def self.delete_all()
+      sql = "DELETE FROM ticket"
+      values = []
+      SqlRunner.run(sql, values)
+    end
+
+
+
+    def film()
+      sql = "SELECT * FROM film WHERE id = $1"
+      values = [@film_id]
+      film_hash = SqlRunner.run(sql, values).first()
+      return Film.new(film_hash)
+    end
+
+
+
+    def customer()
+      sql = "SELECT * FROM customer WHERE id = $1"
+      values = [@customer_id]
+      customer_hash = SqlRunner.run(sql, values).first()
+      return Customer.new(customer_hash)
+    end
+
   end
-
-  def self.all()
-    sql = "SELECT * FROM ticket"
-    values = []
-    ticket = SqlRunner.run(sql, values)
-    result =Ticket.map_ticket(ticket)
-    return result
-  end
-
-
-
-  def self.delete_all()
-    sql = "DELETE FROM ticket"
-    values = []
-    SqlRunner.run(sql, values)
-  end
-
-
-
-  def film()
-    sql = "SELECT * FROM film WHERE id = $1"
-    values = [@film_id]
-  film_hash = SqlRunner.run(sql, values).first()
-  return Film.new(film_hash)
-  end
-
-
-
-  def customer()
-    sql = "SELECT * FROM customer WHERE id = $1"
-    values = [@customer_id]
-  customer_hash = SqlRunner.run(sql, values).first()
-    return Customer.new(users_hash)
-  end
-
-end

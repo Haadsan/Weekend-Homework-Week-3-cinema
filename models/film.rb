@@ -1,7 +1,7 @@
 require('pg')
+require_relative('film.rb')
 require_relative('customer.rb')
-require_relative('film')
-require_relative('ticket')
+require_relative('ticket.rb')
 require_relative('../db/sql_runner.rb')
 
 class Film
@@ -42,6 +42,12 @@ class Film
     result =Film.map_film(film)
     return result
   end
+
+  def self.map_film(film_data)
+      # pass the result of data query()
+      return film_data.map{|film_hash| Film.new(film_hash)}
+    end
+
 
   def update()
       sql = "UPDATE film SET (title, price) = ($1, $2) WHERE id = $3;"
