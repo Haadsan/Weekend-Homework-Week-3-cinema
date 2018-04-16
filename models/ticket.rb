@@ -8,7 +8,7 @@ class Ticket
 
 
   attr_reader :id
-  attr_accessor :film_id, :customer_id
+  attr_accessor :film_id, :customer_id , :price
   def initialize(options)
     @id = options['id'].to_i
     @film_id = options['film_id'].to_i
@@ -33,7 +33,7 @@ class Ticket
     @id = ticket['id'].to_i
   end
 
-  
+
 
   def self.all()
     sql = "SELECT * FROM ticket"
@@ -68,5 +68,10 @@ class Ticket
   customer_hash = SqlRunner.run(sql, values).first()
     return Customer.new(customer_hash)
   end
+
+def price()
+return film().price
+end
+
 
 end

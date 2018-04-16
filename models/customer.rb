@@ -78,11 +78,10 @@ class Customer
     if sufficient_funds?(ticket)
       @funds -= ticket.price()
     end
+  end
 
-    def sufficient_funds?(ticket)
-      return @funds >= ticket.price()
-    end
-
+  def sufficient_funds?(ticket)
+    return @funds >= ticket.price()
   end
 
 end
